@@ -9,9 +9,10 @@ function App() {
   const[followers,setFollowers] = useState('');
   const[following,setfollowing] = useState('');
   const[repos,setRepos] = useState('');
+  const[repoUrl,setRepourl] = useState('');
   const[avatar,setAvatar] = useState('');
   const[userInput,setUserinput] = useState('');
-  const[error,setError] = useState('null');
+  const[error,setError] = useState(null);
 
   useEffect(()=>{
     fetch('https://api.github.com/users/example')
@@ -23,12 +24,13 @@ function App() {
   },[]);
 
   const setData=({name,login,followers,following,
-    public_repos,avatar_url})=>{
+    public_repos,repos_url,avatar_url})=>{
       setName(name);
       setUsernameName(login);
       setFollowers(followers);
       setfollowing(following);
       setRepos(public_repos);
+      setRepourl(repos_url);
       setAvatar(avatar_url);
 
 
@@ -36,7 +38,7 @@ function App() {
 
   const handleSearch = (e)=>{
     setUserinput(e.target.value)
-  }
+  };
 
   const handleSubmit=()=>{
     fetch(`https://api.github.com/users/${userInput}`)
@@ -49,7 +51,7 @@ function App() {
       setError(null);
       }
     });
-  }
+  };
   
   
   return (
@@ -61,7 +63,7 @@ function App() {
             <Form.Input
               placeholder='github user'
               name='github user'
-              value={name}
+              // value={name}
               onChange={handleSearch}
             />
             
@@ -69,7 +71,9 @@ function App() {
           </Form.Group>
         </Form>
     </div>
-    {error ?(<h1>{error}</h1>) :(<div className="card">
+    {error ?
+    (<h1>{error}</h1>) :(
+    <div className="card">
         <Card>
           <Image src={avatar} wrapped ui={false} />
           <Card.Content>
@@ -104,12 +108,13 @@ function App() {
           <Card.Content extra>
             <a>
               <Icon name='user' />
-              22 Friends
+              {repoUrl} Repo url
             </a>
           </Card.Content>
         </Card>
 
-    </div>) }
+    </div>
+    ) }
     
       
     </div>
